@@ -1,0 +1,81 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+
+addUnits <- function(n) {
+  labels <- ifelse(n < 1000, n,  # less than thousands
+                   ifelse(n < 1e6, paste0(round(n/1e3), 'k'),  # in thousands
+                          ifelse(n < 1e9, paste0(round(n/1e6), 'M'),  # in millions
+                                 ifelse(n < 1e12, paste0(round(n/1e9), 'B'), # in billions
+                                        ifelse(n < 1e15, paste0(round(n/1e12), 'T'), # in trillions
+                                               'too big!'
+                                        )))))
+  return(labels)
+}
+```
+
+```{r}
+covid19<- read.csv('https://brasil.io/dataset/covid19/caso?place_type=state&format=csv')
+```
+
+```{r}
+
+covid19 %>% 
+        filter(state %in% c('AM','SC','PR','SP') & date== Sys.Date()) %>% 
+        ggplot(mapping = aes(x =confirmed , y =state , label=addUnits(confirmed), fill=state)) +
+        labs(x='Casos',y='Estados')+
+         #caption = 'Fonte dos dados - Fonte original: Secretarias de Saúde estaduais
+#Compilado por: Álvaro Justen e dezenas de colaboradores; Gráfico: @ericles_pvieira'size=32)+
+    geom_bar(stat = 'identity', show.legend = 'none')+#'#9E2A2B', fill='#9E2A2B')++
+    geom_label(color = "#FFFBE9", fill='#2A4C55',
+               fontface = "bold", size= 5, show.legend = 'none') +
+    scale_x_continuous(minor_breaks = NULL, breaks = NULL)+
+    scale_fill_manual(values = c('AM'="#E09F3E",'PR'="#9E2A2B",'SC'='#540B0E','SP' = '#2E4052'))+
+        theme_minimal()
+        
+ 
+        
+
+```
+```{r 100k}
+
+covid19 %>% 
+        filter(state %in% c('AM','SC','PR','SP') & date== Sys.Date()-1) %>% 
+        ggplot(mapping = aes(x =confirmed_per_100k_inhabitants , y =state , label=addUnits(confirmed_per_100k_inhabitants), fill=state)) +
+        labs(x='Casos',y='Estados', title = 'Casos confirmados por 100k habitantes')+
+         #caption = 'Fonte dos dados - Fonte original: Secretarias de Saúde estaduais
+#Compilado por: Álvaro Justen e dezenas de colaboradores; Gráfico: @ericles_pvieira'size=32)+
+    geom_bar(stat = 'identity', show.legend = 'none')+#'#9E2A2B', fill='#9E2A2B')++
+    geom_label(color = "#FFFBE9", fill='#2A4C55',
+               fontface = "bold", size= 5, show.legend = 'none') +
+    scale_x_continuous(minor_breaks = NULL, breaks = NULL)+
+    scale_fill_manual(values = c('AM'="#E09F3E",'PR'="#9E2A2B",'SC'='#540B0E','SP' = '#2E4052'))+
+        theme_minimal()
+        
+ 
+        
+
+```
+
+```{r temporal}
+
+covid19 %>% 
+        filter(state %in% c('AM','SC','PR','SP')) %>% 
+        ggplot(mapping = aes(x = as.Date(date), y = confirmed,group = state,color = factor(state)))+
+        geom_line(size=1)+
+        scale_y_continuous(labels = addUnits)+
+        scale_x_date(date_breaks = '1 month', date_labels = '%m')+
+        labs(x='Mês', y= 'Casos Confirmados')+
+        theme_classic()
+                     
+
+```
+

@@ -1,13 +1,11 @@
 ---
-title: "Em construção"
+title: "Covid"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-```
-#Atualizando
-```{r, include=FALSE}
+
 library(tidyverse)
 
 addUnits <- function(n) {
@@ -20,7 +18,16 @@ addUnits <- function(n) {
                                         )))))
   return(labels)
 }
+
 ```
+  
+ Codigos referentes a construção de gráficos no início da pandemia. Com eles 
+ informei aos amigos, como estava a o desenvolvimento de casos em suas 
+ cidades e nas cidades onde residem seus familiares.  
+   
+## Atualizando
+  
+
 
 ```{r data, echo=FALSE}
 Sys.Date()

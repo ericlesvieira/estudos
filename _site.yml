@@ -6,3 +6,7 @@ navbar:
       href: index.html
     - text: "Covid"
       href: covid.html
+output:
+  html_document:
+    theme: cosmo
+    

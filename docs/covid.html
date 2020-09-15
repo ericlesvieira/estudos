@@ -11,7 +11,7 @@
 
 
 
-<title>R Notebook</title>
+<title>Untitled</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -274,6 +274,9 @@ $(document).ready(function () {
         <li>
   <a href="index.html">Home</a>
 </li>
+<li>
+  <a href="covid.html">Covid</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -286,12 +289,47 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">R Notebook</h1>
+<h1 class="title toc-ignore">Untitled</h1>
 
 </div>
 
 
-<p>#bem vindo</p>
+<pre class="r"><code>covid19&lt;- read.csv(&#39;https://brasil.io/dataset/covid19/caso?place_type=state&amp;format=csv&#39;)</code></pre>
+<pre class="r"><code>covid19 %&gt;% 
+        filter(state %in% c(&#39;AM&#39;,&#39;SC&#39;,&#39;PR&#39;,&#39;SP&#39;) &amp; date== Sys.Date()) %&gt;% 
+        ggplot(mapping = aes(x =confirmed , y =state , label=addUnits(confirmed), fill=state)) +
+        labs(x=&#39;Casos&#39;,y=&#39;Estados&#39;)+
+         #caption = &#39;Fonte dos dados - Fonte original: Secretarias de Saúde estaduais
+#Compilado por: Álvaro Justen e dezenas de colaboradores; Gráfico: @ericles_pvieira&#39;size=32)+
+    geom_bar(stat = &#39;identity&#39;, show.legend = &#39;none&#39;)+#&#39;#9E2A2B&#39;, fill=&#39;#9E2A2B&#39;)++
+    geom_label(color = &quot;#FFFBE9&quot;, fill=&#39;#2A4C55&#39;,
+               fontface = &quot;bold&quot;, size= 5, show.legend = &#39;none&#39;) +
+    scale_x_continuous(minor_breaks = NULL, breaks = NULL)+
+    scale_fill_manual(values = c(&#39;AM&#39;=&quot;#E09F3E&quot;,&#39;PR&#39;=&quot;#9E2A2B&quot;,&#39;SC&#39;=&#39;#540B0E&#39;,&#39;SP&#39; = &#39;#2E4052&#39;))+
+        theme_minimal()</code></pre>
+<p><img src="covid_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>covid19 %&gt;% 
+        filter(state %in% c(&#39;AM&#39;,&#39;SC&#39;,&#39;PR&#39;,&#39;SP&#39;) &amp; date== Sys.Date()-1) %&gt;% 
+        ggplot(mapping = aes(x =confirmed_per_100k_inhabitants , y =state , label=addUnits(confirmed_per_100k_inhabitants), fill=state)) +
+        labs(x=&#39;Casos&#39;,y=&#39;Estados&#39;, title = &#39;Casos confirmados por 100k habitantes&#39;)+
+         #caption = &#39;Fonte dos dados - Fonte original: Secretarias de Saúde estaduais
+#Compilado por: Álvaro Justen e dezenas de colaboradores; Gráfico: @ericles_pvieira&#39;size=32)+
+    geom_bar(stat = &#39;identity&#39;, show.legend = &#39;none&#39;)+#&#39;#9E2A2B&#39;, fill=&#39;#9E2A2B&#39;)++
+    geom_label(color = &quot;#FFFBE9&quot;, fill=&#39;#2A4C55&#39;,
+               fontface = &quot;bold&quot;, size= 5, show.legend = &#39;none&#39;) +
+    scale_x_continuous(minor_breaks = NULL, breaks = NULL)+
+    scale_fill_manual(values = c(&#39;AM&#39;=&quot;#E09F3E&quot;,&#39;PR&#39;=&quot;#9E2A2B&quot;,&#39;SC&#39;=&#39;#540B0E&#39;,&#39;SP&#39; = &#39;#2E4052&#39;))+
+        theme_minimal()</code></pre>
+<p><img src="covid_files/figure-html/100k-1.png" width="672" /></p>
+<pre class="r"><code>covid19 %&gt;% 
+        filter(state %in% c(&#39;AM&#39;,&#39;SC&#39;,&#39;PR&#39;,&#39;SP&#39;)) %&gt;% 
+        ggplot(mapping = aes(x = as.Date(date), y = confirmed,group = state,color = factor(state)))+
+        geom_line(size=1)+
+        scale_y_continuous(labels = addUnits)+
+        scale_x_date(date_breaks = &#39;1 month&#39;, date_labels = &#39;%m&#39;)+
+        labs(x=&#39;Mês&#39;, y= &#39;Casos Confirmados&#39;)+
+        theme_classic()</code></pre>
+<p><img src="covid_files/figure-html/temporal-1.png" width="672" /></p>
 
 
 

@@ -22,6 +22,10 @@ addUnits <- function(n) {
 }
 ```
 
+```{r data, echo=FALSE}
+Sys.Date()
+```
+
 ```{r}
 covid19<- read.csv('https://brasil.io/dataset/covid19/caso?place_type=state&format=csv')
 ```
